@@ -232,17 +232,18 @@ def hangman(secret_word):
 
 
 
-def match_with_gaps(my_word, other_word):
+def match_with_gaps(my_word, other_word, letters_guessed):
     '''
     my_word: string with _ characters, current guess of secret word
     other_word: string, regular English word
+    letters_guessed: list (of letters), which letters have been guessed so far
     returns: boolean, True if all the actual letters of my_word match the 
         corresponding letters of other_word, or the letter is the special symbol
         _ , and my_word and other_word are of the same length;
         False otherwise: 
     '''
-    guessed_letters = "".join(set(my_word.replace(' ', '').replace('_', '')))
-    reg_ex = '^' + my_word.replace(' ', '').replace('_', '[^' + guessed_letters + ']') + '$'
+    guessed_letters = ''.join(letters_guessed)
+    reg_ex = '^' + my_word.replace('_ ', '[^' + guessed_letters + ']') + '$'
     #print('my_word: {}\nguessed_letters: {}\nreg_ex: {}'.format(my_word, guessed_letters, reg_ex))
     
     if re.match(reg_ex, other_word) != None:
@@ -252,9 +253,10 @@ def match_with_gaps(my_word, other_word):
 
 #print(match_with_gaps("te_ t", "tact"))
 
-def show_possible_matches(my_word):
+def show_possible_matches(my_word, letters_guessed):
     '''
     my_word: string with _ characters, current guess of secret word
+    letters_guessed: list (of letters), which letters have been guessed so far
     returns: nothing, but should print out every word in wordlist that matches my_word
              Keep in mind that in hangman when a letter is guessed, all the positions
              at which that letter occurs in the secret word are revealed.
@@ -265,16 +267,19 @@ def show_possible_matches(my_word):
     matching_word_found = False
     matching_word_list = []
     
-    for word in wordlist:
-        if(match_with_gaps(my_word, word)):
-            matching_word_list.append(word)
-            matching_word_found = True
-            
-    if(matching_word_found):
-        matching_words = ' '.join(matching_word_list)
-        print('Possible word matches are:\n{}'.format(matching_words))
-    else:
-        print('No matches found')
+    try:
+        for word in wordlist:
+            if(match_with_gaps(my_word, word, letters_guessed)):
+                matching_word_list.append(word)
+                matching_word_found = True
+                
+        if(matching_word_found):
+            matching_words = ' '.join(matching_word_list)
+            print('Possible word matches are:\n{}'.format(matching_words))
+        else:
+            print('No matches found')
+    except:
+        print('Something went wrong while providing hints!!!')
             
 #show_possible_matches("a_ pl_ ")
 
@@ -336,7 +341,7 @@ def hangman_with_hints(secret_word):
                 if(guessed_word.replace('_ ', '') == ''):
                     print('Guess atleast one letter, then hints will be provided!')
                 else:
-                    show_possible_matches(guessed_word)
+                    show_possible_matches(guessed_word, letters_guessed)
             # valid letter
             else:
                 char = char.lower()
