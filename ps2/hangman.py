@@ -1,7 +1,9 @@
 # Problem Set 2, hangman.py
 # Name: Arti
 # Collaborators:
-# Time spent:
+# Time spent: 
+# Date created: 1st & 2nd March 2017
+# Date Last updated:
 
 # Hangman Game
 # -----------------------------------
