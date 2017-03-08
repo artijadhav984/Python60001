@@ -91,7 +91,7 @@ class Message(object):
         
         Returns: a COPY of self.valid_words
         '''
-        self.valid_words
+        self.valid_words.copy()
 
     def build_shift_dict(self, shift):
         '''
@@ -185,7 +185,7 @@ class PlaintextMessage(Message):
         
         Returns: a COPY of self.encryption_dict
         '''
-        return self.encryption_dict
+        return self.encryption_dict.copy()
 
     def get_message_text_encrypted(self):
         '''
